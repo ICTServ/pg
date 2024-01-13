@@ -21,6 +21,9 @@ sudo systemctl start postgresql
 sudo systemctl enable postgresql
 
 # Modify PostgreSQL configuration to listen on all addresses
+# NOTE: This step opens the file in nano. You need to manually change listen_addresses to '*' and save the file.
+# sudo nano /etc/postgresql/16/main/postgresql.conf
+
 # Automatically update listen_addresses without using nano
 sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/16/main/postgresql.conf
 
@@ -37,12 +40,8 @@ sudo systemctl restart postgresql
 # Allow PostgreSQL port in the firewall
 sudo ufw allow 5432/tcp
 
-# Prompt for the PostgreSQL user password
-echo "Please enter the new password for the PostgreSQL 'postgres' user:"
-read -s postgresPassword
+# NOTE: The next line changes the password for the 'postgres' user. You must manually execute this command.
+# sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'newpassword';"
 
-# Change the password for the 'postgres' user
-sudo -u postgres psql -c "ALTER USER postgres PASSWORD '$postgresPassword';"
-
-# Inform the user that the script has completed
-echo "PostgreSQL installation and configuration complete."
+# Add a reminder for manual steps
+echo "Remember to manually set the PostgreSQL user password using: sudo -u postgres psql -c \"ALTER USER postgres PASSWORD 'newpassword';\""
